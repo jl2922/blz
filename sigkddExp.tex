@@ -83,18 +83,20 @@
 \maketitle
 \begin{abstract}
 
-MapReduce and its variants significantly simplifies cluster computing.
+MapReduce and its variants significantly simplify cluster computing.
 However, many data mining tasks are compute intensive rather than data intensive, and keeping the flexibility of MapReduce while achieving the speed of hand-optimized parallel codes can be difficult.
-We present Blaze, a C++ library that makes it easy to develop high performance data parallel softwares.
-Blaze is the foundation of Arrow, a new quantum chemistry software that is used in several top research groups and is even faster than other hand-optimized softwares on similar methods.
+We present Blaze, a C++ library that makes it easy to develop high performance data-parallel software.
+%Blaze is the foundation of Arrow, a new quantum chemistry package that is used in several top research groups and is even faster than other hand-optimized softwares on similar methods.
+Blaze is the foundation of Arrow, a new quantum chemistry package that is already being used in several top research groups.
+It is faster than other quantum chemistry packages, including hand-optimized ones.
 At the core of Blaze are two sets of features: distributed data containers and the MapReduce function.
 % The MapReduce function provides a high performance implementation of performing MapReduce on an input container and saves the results to a mutable output container.
 To enable the MapReduce function to run efficiently, Blaze introduces several performance-oriented improvements, including eager reduction, fast serialization, and hash-based shuffle.
 Blaze also automatically applies special optimizations for cases where the resulting data container has a small fixed key range, which is common in data mining.
 The combination of a simple interface and these performance optimizations makes Blaze an easy-to-use high performance cluster computing library for data mining and similar workflows.
 We apply Blaze to several common data mining tasks, including word frequency count, pagerank, k-means, expectation maximization (Gaussian mixture model), and nearest neighbors search.
-Blaze outperforms Apache Spark on in-memory computations by an order of magnitude on average and scales almost linearly in performance with the number of nodes.
-% In addition, Blaze only uses MapReduce and two utility functions in its implementation while Spark uses more than 20 different parallel primitives in its built-in implementation.
+Blaze outperforms Apache Spark for in-memory computations by an order of magnitude on average, and its speed scales almost linearly with the number of nodes.
+In addition, Blaze uses only MapReduce and two utility functions in its implementation while Spark uses more than 20 different parallel primitives in its built-in implementation.
 
 
 % Over the past decade, MapReduce has revolutionized cloud data processing.
@@ -207,7 +209,7 @@ We also thank professor Cyrus Umrigar for the helpful suggestions for the paper.
 %Appendix A
 \section{Word frequency count}
 In this section, we provide the source code of a common example in MapReduce, which is to count the number of occurrences of each unique word in an input file.
-We save the results to a distributed hash map, which can be used for further processing.
+We save the results in a distributed hash map, which can be used for further processing.
 
 \begin{lstlisting}
 #include <blaze/blaze.h>
@@ -271,7 +273,7 @@ int main(int argc, char** argv) {
     double x = blaze::random::uniform();
     double y = blaze::random::uniform();
     if (x * x + y * y < 1) {
-      // Map to points within circle to key 0.
+      // Map points within circle to key 0.
       emit(0, 1);
     }
   };
@@ -292,9 +294,8 @@ int main(int argc, char** argv) {
 
 In conventional MapReduce implementations, mapping big data onto a single key is usually not efficient and consumes large amount of memory during the map phase.
 Hence, in practice, people usually hand-code parallel for loops in such situations.
-
-However, by using Blaze, the above code will have similar memory consumption and achieve similar performance as a hand-optimized parallel for loops.
-In short, Blaze frees users from dealing with low level data communications while ensuring the high performance.
+However, by using Blaze, the above code has similar memory consumption and performance as hand-optimized parallel for loops.
+In short, Blaze frees users from dealing with low level data communication while ensuring high performance.
 
 % That's all folks!
 \end{document}
